@@ -1,238 +1,192 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The World — Comunidade RPG</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Montserrat', sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The World — Comunidade RPG</title>
 
+<style>
     body {
-      background: linear-gradient(to bottom, #071026, #081427, #04111b);
-      color: #e8ecff;
-      overflow-x: hidden;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #0a0a0f;
+        color: white;
+        scroll-behavior: smooth;
     }
 
-    header {
-      width: 100%;
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    header img {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 2px solid #5c6cff;
+    /* MENU */
+    nav {
+        width: 100%;
+        background: rgba(10, 10, 15, 0.8);
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        z-index: 999;
     }
 
     nav a {
-      margin-left: 20px;
-      font-size: 14px;
-      text-decoration: none;
-      color: #d8ddff;
-      transition: 0.2s;
+        color: #d38bff;
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 18px;
+        transition: 0.3s;
     }
 
     nav a:hover {
-      color: white;
+        color: #ffffff;
+        text-shadow: 0 0 10px #b300ff;
     }
 
-    .btn-primary {
-      background: #4f46e5;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: 0.2s;
+    header {
+        text-align: center;
+        padding: 100px 20px 40px 20px;
+        background: linear-gradient(90deg, #6a00ff, #b300ff);
+        box-shadow: 0 0 25px #6a00ff;
+        margin-top: 60px;
     }
 
-    .btn-primary:hover {
-      background: #6d63ff;
+    header img {
+        width: 120px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px #000;
+        margin-bottom: 10px;
     }
 
-    .hero {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 40px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      align-items: center;
+    header h1 {
+        font-size: 40px;
+        margin: 0;
+        font-weight: 700;
     }
 
-    .hero h1 {
-      font-size: 46px;
-      font-weight: 800;
+    .container {
+        width: 95%;
+        max-width: 900px;
+        margin: 40px auto;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
     }
 
-    .hero p {
-      margin-top: 15px;
-      font-size: 18px;
-      color: #d0d6ff;
+    .section-title {
+        font-size: 26px;
+        font-weight: bold;
+        margin-top: 40px;
+        margin-bottom: 10px;
+        text-align: center;
+        color: #d38bff;
+        text-shadow: 0 0 10px #9b30ff;
     }
 
-    .hero .stats {
-      margin-top: 25px;
-      display: flex;
-      gap: 40px;
+    .card {
+        padding: 20px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        box-shadow: 0 0 15px rgba(132, 0, 255, 0.4);
+        transition: 0.3s;
+        text-align: center;
     }
 
-    .stats div span:first-child {
-      font-size: 28px;
-      font-weight: 800;
-      display: block;
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 25px rgba(162, 0, 255, 0.6);
     }
 
-    .stats div span:last-child {
-      font-size: 13px;
-      color: #bfc6ff;
+    .card img {
+        width: 60px;
+        border-radius: 10px;
+        margin-bottom: 10px;
     }
 
-    .card-box {
-      background: rgba(25, 30, 70, 0.35);
-      padding: 25px;
-      border-radius: 20px;
-      border: 1px solid rgba(90, 110, 255, 0.25);
+    .role {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #c770ff;
     }
 
-    #about, #features, #staff {
-      max-width: 1200px;
-      margin: 60px auto;
-      padding: 20px 40px;
-    }
-
-    h2 {
-      font-size: 32px;
-      margin-bottom: 20px;
-      font-weight: 800;
-    }
-
-    #staff-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
-      margin-top: 20px;
-    }
-
-    .staff-card {
-      background: rgba(20, 25, 60, 0.35);
-      padding: 20px;
-      border-radius: 15px;
-      border: 1px solid rgba(90, 110, 255, 0.25);
-    }
-
-    .staff-card h3 {
-      margin-top: 10px;
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .staff-card p {
-      margin-top: 5px;
-      font-size: 14px;
-      color: #cbd0ff;
+    .user {
+        font-size: 20px;
+        font-weight: bold;
     }
 
     footer {
-      margin-top: 80px;
-      padding: 30px;
-      text-align: center;
-      border-top: 1px solid rgba(80, 100, 180, 0.3);
-      color: #9da5e6;
-      font-size: 14px;
+        margin-top: 60px;
+        text-align: center;
+        padding: 20px;
+        font-size: 14px;
+        opacity: .6;
     }
-  </style>
+</style>
 </head>
 <body>
-  <header>
-    <div style="display:flex; align-items:center; gap:15px;">
-      <img src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048" />
-      <div>
-        <h1 style="font-size:22px; font-weight:800;">The World</h1>
-        <p style="font-size:12px; color:#aab2ff;">Comunidade de RPG de Mesa</p>
-      </div>
+
+<!-- MENU SUPERIOR -->
+<nav>
+    <a href="#equipe">Equipe</a>
+    <a href="#parcerias">Parcerias</a>
+    <a href="https://discord.gg/47vgpapDHm" target="_blank">Discord</a>
+</nav>
+
+<!-- TOPO -->
+<header>
+    <img src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048">
+    <h1>The World — Comunidade RPG</h1>
+</header>
+
+<div class="container">
+
+    <!-- EQUIPE -->
+    <h2 id="equipe" class="section-title">Equipe</h2>
+
+    <div class="card">
+        <img src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048">
+        <div class="role">Admin</div>
+        <div class="user">@franccis12</div>
     </div>
 
-    <nav>
-      <a href="#about">Sobre</a>
-      <a href="#features">Recursos</a>
-      <a href="#staff">Equipe</a>
-      <a href="https://discord.gg/47vgpapDHm" target="_blank" class="btn-primary">Entrar no Discord</a>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <div>
-      <h1>The World — O universo perfeito para RPG de mesa</h1>
-      <p>Uma comunidade ativa com mesas semanais, sistemas variados, criação de mundos e suporte para iniciantes.</p>
-
-      <div class="stats">
-        <div><span>45+</span><span>Mesas ativas</span></div>
-        <div><span>1.2k</span><span>Membros</span></div>
-        <div><span>24/7</span><span>Suporte</span></div>
-      </div>
-
-      <a href="https://discord.gg/47vgpapDHm" class="btn-primary" style="margin-top:25px; display:inline-block;">Entrar na Comunidade</a>
+    <div class="card">
+        <img src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048">
+        <div class="role">Fundador</div>
+        <div class="user">@mestrebb</div>
     </div>
 
-    <div class="card-box">
-      <h3 style="font-size:23px; font-weight:700;">Bem-vindo a The World</h3>
-      <p style="margin-top:10px; font-size:14px; color:#cbd0ff;">Mesas públicas, privadas, eventos mensais e apoio completo para jogadores novos.</p>
-      <p style="margin-top:15px; font-size:14px; color:#b9c0ff;">Próxima sessão: Domingo, 20h — Mesa: The Fall of Aster</p>
-      <a href="https://discord.gg/47vgpapDHm" class="btn-primary" style="margin-top:20px; display:inline-block;">Participar</a>
+    <div class="card">
+        <img src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048">
+        <div class="role">Admin</div>
+        <div class="user">@weliton00d4</div>
     </div>
-  </section>
 
-  <section id="about">
-    <h2>Sobre a Comunidade</h2>
-    <p style="color:#cbd0ff; max-width:800px;">The World é uma das maiores comunidades de RPG de mesa no Discord. Temos sistemas variados, mestres qualificados, eventos e um ambiente amigável para veteranos e iniciantes.</p>
-  </section>
+    <!-- MENU DE PARCERIAS -->
+    <h2 id="parcerias" class="section-title">Parcerias</h2>
 
-  <section id="features">
-    <h2>Recursos</h2>
-    <ul style="list-style:none; margin-top:10px; line-height:2; color:#d0d6ff;">
-      <li>• Mesas públicas e privadas</li>
-      <li>• Sistema de recompensas e conquistas</li>
-      <li>• Biblioteca de fichas e recursos</li>
-      <li>• Eventos e torneios mensais</li>
-    </ul>
-  </section>
-
-  <section id="staff">
-    <h2>Equipe Administrativa</h2>
-
-    <div id="staff-grid">
-      <div class="staff-card">
-        <h3>@franccis12</h3>
-        <p>Admin</p>
-      </div>
-
-      <div class="staff-card">
-        <h3>@mestrebb</h3>
-        <p>Fundador</p>
-      </div>
-
-      <div class="staff-card">
-        <h3>@weliton00d4</h3>
-        <p>Admin</p>
-      </div>
+    <div class="card">
+        <div class="role">Parceiro Oficial</div>
+        <div class="user">@ServerDarkWorld</div>
     </div>
-  </section>
 
-  <footer>
-    © 2025 The World — Comunidade de RPG. Todos os direitos reservados.
-  </footer>
+    <div class="card">
+        <div class="role">Colaboração Especial</div>
+        <div class="user">@ComunidadeDragonFire</div>
+    </div>
+
+    <div class="card">
+        <div class="role">Aliado VIP</div>
+        <div class="user">@GalaxyTeamBR</div>
+    </div>
+
+</div>
+
+<footer>
+    Criado por weliton © 2025
+</footer>
+
 </body>
 </html>
