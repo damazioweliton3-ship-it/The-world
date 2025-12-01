@@ -1,0 +1,223 @@
+/**
+ * The World — single-file React component (TailwindCSS)
+ *
+ * How to use:
+ * 1. Create a Vite React app: `npm create vite@latest my-site --template react`
+ * 2. Install TailwindCSS following https://tailwindcss.com/docs/guides/vite
+ * 3. Copy this file into `src/App.jsx` and import it from `main.jsx`.
+ * 4. Install framer-motion (optional): `npm i framer-motion`
+ *
+ * Assets used from the user:
+ * - Logo GIF: https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048
+ * - Example site to emulate: https://abre.ai/imperialgroup
+ * - Discord invite: https://discord.gg/47vgpapDHm
+ *
+ * Notes: This is a self-contained, single-file React component designed to be visually rich
+ * and easily customizable. All styling uses Tailwind classes — tweak spacing, colors and
+ * typography at the top of the component (CSS variables) to match your taste.
+ */
+
+import React from "react";
+import { motion } from "framer-motion";
+
+export default function TheWorld() {
+  const logo = "https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048";
+  const discordInvite = "https://discord.gg/47vgpapDHm";
+
+  const admins = [
+    { name: "franccis12", role: "Administrador", tag: "@franccis12" },
+    { name: "mestrebb", role: "Administrador", tag: "@mestrebb" },
+    { name: "weliton00d4", role: "Fundador", tag: "@weliton00d4" },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-[#071026] via-[#081427] to-[#04111b] text-slate-100 antialiased">
+      <header className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <img src={logo} alt="The World logo" className="w-14 h-14 rounded-full ring-2 ring-indigo-500/60 object-cover shadow-lg" />
+          <div>
+            <h1 className="text-2xl font-extrabold tracking-tight">The World</h1>
+            <p className="text-sm text-indigo-200/70">Comunidade Discord — RPG de Mesa</p>
+          </div>
+        </div>
+
+        <nav className="flex items-center gap-4">
+          <a href="#about" className="text-sm hover:underline">Sobre</a>
+          <a href="#features" className="text-sm hover:underline">Recursos</a>
+          <a href="#staff" className="text-sm hover:underline">Administradores</a>
+          <a href={discordInvite} target="_blank" rel="noreferrer" className="ml-4 inline-flex items-center gap-2 bg-indigo-600/95 hover:bg-indigo-500 px-4 py-2 rounded-xl text-sm font-medium shadow">Entrar no Discord</a>
+        </nav>
+      </header>
+
+      <main className="max-w-6xl mx-auto px-6 pb-16">
+        {/* Hero */}
+        <section className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <h2 className="text-4xl md:text-5xl font-extrabold leading-tight">The World — Um universo para seu RPG de mesa</h2>
+            <p className="mt-4 text-lg text-indigo-100/80">Roleplay colaborativo, mesas semanais, criação de mundos e uma comunidade ativa guiada por mestres dedicados.</p>
+
+            <div className="mt-6 flex gap-3">
+              <a href={discordInvite} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 bg-emerald-500/95 hover:bg-emerald-400 px-5 py-3 rounded-2xl font-semibold shadow-lg">Entrar na comunidade</a>
+              <a href="#about" className="inline-flex items-center gap-2 border border-indigo-600/40 px-5 py-3 rounded-2xl text-sm">Saber mais</a>
+            </div>
+
+            <div className="mt-6 grid grid-cols-3 gap-3 text-center text-sm">
+              <div>
+                <span className="block text-2xl font-bold">45+</span>
+                <span className="text-indigo-200/70">Mesas ativas</span>
+              </div>
+              <div>
+                <span className="block text-2xl font-bold">1.2k</span>
+                <span className="text-indigo-200/70">Membros</span>
+              </div>
+              <div>
+                <span className="block text-2xl font-bold">24/7</span>
+                <span className="text-indigo-200/70">Suporte</span>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="relative">
+            <div className="bg-gradient-to-br from-indigo-900/40 to-transparent rounded-3xl p-6 backdrop-blur-md border border-indigo-800/30 shadow-2xl">
+              <div className="flex items-center gap-4">
+                <img src={logo} alt="logo" className="w-20 h-20 rounded-lg shadow-inner object-cover" />
+                <div>
+                  <h3 className="text-xl font-bold">Bem-vindo a The World</h3>
+                  <p className="mt-1 text-sm text-indigo-200/70">Entre, escolha sua mesa e comece a aventura — regras flexíveis, mesas temáticas e suporte para iniciantes.</p>
+                </div>
+              </div>
+
+              <div className="mt-6 grid grid-cols-2 gap-4">
+                <div className="p-4 rounded-xl bg-indigo-900/30">
+                  <h4 className="font-semibold">Mesas Públicas</h4>
+                  <p className="text-sm text-indigo-100/70 mt-2">Participe de mesas abertas com jogadores de diferentes níveis.</p>
+                </div>
+                <div className="p-4 rounded-xl bg-indigo-900/25">
+                  <h4 className="font-semibold">Mesas Privadas</h4>
+                  <p className="text-sm text-indigo-100/70 mt-2">Crie sua mesa com regras personalizadas e convites privados.</p>
+                </div>
+              </div>
+
+              <div className="mt-6 flex gap-3 items-center">
+                <div className="flex-1 bg-gradient-to-r from-[#081427] to-[#062032] p-4 rounded-lg">
+                  <p className="text-xs text-indigo-200/60">Próxima sessão</p>
+                  <p className="mt-1 font-medium">Domingo, 8:00 PM • Mesa: The Fall of Aster</p>
+                </div>
+                <a href={discordInvite} target="_blank" rel="noreferrer" className="px-4 py-3 bg-indigo-600 rounded-xl font-medium">Junte-se</a>
+              </div>
+            </div>
+
+            <div className="absolute -right-6 -bottom-10 w-48 h-48 rounded-full bg-gradient-to-tr from-[#7c3aed]/20 to-[#06b6d4]/10 border border-indigo-700/20 blur-xl mix-blend-screen"></div>
+          </motion.div>
+        </section>
+
+        {/* About */}
+        <section id="about" className="mt-14 bg-indigo-900/10 rounded-2xl p-8 border border-indigo-800/30">
+          <h3 className="text-2xl font-bold">Sobre The World</h3>
+          <p className="mt-3 text-indigo-100/80">The World é uma comunidade de RPG de mesa hospedada no Discord. Criamos espaço para mestres, jogadores e criadores de conteúdo com mesas semanais, eventos, premiações e um sistema de suporte para novos jogadores.</p>
+
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-4 bg-indigo-900/20 rounded-xl">
+              <h4 className="font-semibold">Mestres Qualificados</h4>
+              <p className="text-sm mt-2">Mestres experientes de diferentes estilos e sistemas — D&D, Fate, Call of Cthulhu e mais.</p>
+            </div>
+            <div className="p-4 bg-indigo-900/20 rounded-xl">
+              <h4 className="font-semibold">Sistema de Recompensas</h4>
+              <p className="text-sm mt-2">Feats, conquistas e reconhecimento para jogadores ativos.</p>
+            </div>
+            <div className="p-4 bg-indigo-900/20 rounded-xl">
+              <h4 className="font-semibold">Comunidade Ativa</h4>
+              <p className="text-sm mt-2">Canais organizados, eventos e suporte para criação de conteúdo.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Features */}
+        <section id="features" className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          <div>
+            <h3 className="text-2xl font-bold">Recursos</h3>
+            <ul className="mt-4 space-y-3 text-sm">
+              <li>• Sistema de agendamento inteligente para sessões</li>
+              <li>• Salas temáticas e canais organizados por sistema</li>
+              <li>• Biblioteca de recursos e fichas prontas</li>
+              <li>• Eventos mensais com prêmios e rankings</li>
+            </ul>
+
+            <div className="mt-6">
+              <h4 className="font-semibold">Quer mestrar?</h4>
+              <p className="text-sm mt-2">Envie sua proposta no canal #mestre-candidatos — avaliamos conteúdo, estilo e disponibilidade.</p>
+            </div>
+          </div>
+
+          <div className="p-6 rounded-2xl bg-gradient-to-br from-[#0b1220]/40 to-transparent border border-indigo-800/30">
+            <h4 className="text-lg font-bold">Convite rápido</h4>
+            <p className="mt-2 text-sm">Clique abaixo para entrar no servidor e conferir mesas abertas — seja bem-vindo!</p>
+            <a href={discordInvite} target="_blank" rel="noreferrer" className="mt-4 inline-block px-5 py-3 bg-emerald-500 rounded-xl font-semibold">Entrar no Discord</a>
+
+            <div className="mt-6 pt-4 border-t border-indigo-800/20">
+              <h5 className="font-medium">Destaques</h5>
+              <div className="mt-3 grid grid-cols-2 gap-3">
+                <div className="p-3 rounded-lg bg-indigo-900/20">Suporte para iniciantes</div>
+                <div className="p-3 rounded-lg bg-indigo-900/20">Mesas com narrativa intensa</div>
+                <div className="p-3 rounded-lg bg-indigo-900/20">Ferramentas de criação</div>
+                <div className="p-3 rounded-lg bg-indigo-900/20">Eventos temáticos mensais</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Staff */}
+        <section id="staff" className="mt-12">
+          <h3 className="text-2xl font-bold">Administradores</h3>
+          <p className="mt-2 text-sm text-indigo-200/70">Conheça quem comanda a comunidade</p>
+
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {admins.map((a, i) => (
+              <motion.div key={a.name} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 * i }} className="p-6 rounded-2xl bg-indigo-900/10 border border-indigo-800/30">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-700/50 to-indigo-400/30 flex items-center justify-center text-xl font-bold">{a.name[0]?.toUpperCase()}</div>
+                  <div>
+                    <div className="font-semibold">{a.tag}</div>
+                    <div className="text-xs text-indigo-200/60">{a.role}</div>
+                  </div>
+                </div>
+
+                <p className="mt-4 text-sm text-indigo-200/75">Disponível para dúvidas sobre mesas, regras e agendamento. DM para consultas e propostas de mestragem.</p>
+
+                <div className="mt-4 flex gap-2">
+                  <a target="_blank" rel="noreferrer" href={discordInvite} className="flex-1 text-center px-3 py-2 rounded-lg border border-indigo-600/30 text-sm">Convidar</a>
+                  <a target="_blank" rel="noreferrer" href={`https://discord.com/users/${a.name}`} className="px-3 py-2 rounded-lg text-sm bg-indigo-600/80">Perfil</a>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* Footer / CTA */}
+        <section className="mt-14 p-8 rounded-2xl bg-gradient-to-r from-[#04111b]/60 to-[#081427]/30 border border-indigo-800/30">
+          <div className="max-w-3xl mx-auto text-center">
+            <h4 className="text-xl font-bold">Pronto para começar sua história?</h4>
+            <p className="mt-2 text-sm text-indigo-200/70">Junte-se a The World no Discord e encontre sua mesa ideal.</p>
+            <a href={discordInvite} target="_blank" rel="noreferrer" className="mt-6 inline-block px-6 py-3 bg-emerald-500 rounded-2xl font-semibold">Entrar no Discord</a>
+
+            <div className="mt-6 text-xs text-indigo-200/60">Administradores: @franccis12, @mestrebb, @weliton00d4 • Link: discord.gg/47vgpapDHm</div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="mt-10 py-6 border-t border-indigo-900/40">
+        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <img src={logo} alt="logo" className="w-10 h-10 rounded-md" />
+            <div>
+              <div className="text-sm font-semibold">The World</div>
+              <div className="text-xs text-indigo-200/60">Comunidade de RPG de mesa</div>
+            </div>
+          </div>
+
+          <div className="text-sm text-indigo-200/60">© {new Date().getFullYear()} The World — Feito com ❤️ para RPG</div>
+        </div>
+      </footer>
+    </div>
+  );
+}
