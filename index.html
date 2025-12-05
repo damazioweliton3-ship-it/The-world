@@ -9,473 +9,164 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-  :root{
-    --bg-1:#05050a; --bg-2:#071029;
-    --accent:#b14dff; --accent-2:#6a00ff;
-    --glass: rgba(255,255,255,0.03);
-    --muted:#aeb6d1;
-    --neon: 0 0 18px rgba(161,86,255,0.18), 0 0 40px rgba(106,0,255,0.06);
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:linear-gradient(180deg,var(--bg-1),var(--bg-2) 60%);color:#eef0ff;min-height:100vh;overflow-x:hidden}
-  a{color:inherit}
-  /* Particles canvas full screen */
-  #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;filter:contrast(1.05) saturate(1.1)}
-  /* layout */
-  nav.topbar{position:fixed;left:0;right:0;top:0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;gap:16px;z-index:1000;background:linear-gradient(180deg,rgba(5,5,8,0.55),rgba(5,5,8,0.25));backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.03)}
-  .brand{display:flex;align-items:center;gap:12px}
-  .brand img{width:52px;height:52px;border-radius:12px;box-shadow:0 6px 24px rgba(106,0,255,0.12)}
-  .brand h1{font-family:Cinzel,serif;font-size:18px}
-  .menu{display:flex;gap:14px;align-items:center}
-  .menu a{color:var(--accent);text-decoration:none;font-weight:700;padding:8px 12px;border-radius:10px;transition:.18s}
-  .menu a:hover{color:#fff;transform:translateY(-3px);text-shadow:0 0 12px var(--accent)}
-  .cta-discord{background:linear-gradient(90deg,#5865F2,#4752C4);padding:10px 14px;border-radius:999px;color:white;font-weight:800;box-shadow:0 12px 36px rgba(70,90,255,0.12)}
-  header.hero{padding:110px 6% 60px;max-width:1400px;margin:0 auto;z-index:5;position:relative;display:flex;gap:32px;align-items:center}
-  .hero-left{flex:1;min-width:300px}
-  .hero-title{font-family:Cinzel,serif;font-size:48px;letter-spacing:1px;margin-bottom:12px;text-shadow:0 6px 30px rgba(106,0,255,0.08)}
-  .hero-sub{color:var(--muted);max-width:680px;margin-bottom:18px}
-  .hero-actions{display:flex;gap:12px;align-items:center}
-  .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:12px;font-weight:800;border:0;cursor:pointer}
-  .btn-primary{background:linear-gradient(90deg,var(--accent-2),var(--accent));color:white;box-shadow:var(--neon)}
-  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
-  .hero-right{flex:1;display:flex;justify-content:center;align-items:center;transform-style:preserve-3d;perspective:900}
-  .hero-art{width:420px;height:260px;border-radius:14px;object-fit:cover;box-shadow:0 30px 80px rgba(80,30,200,0.12);transition:transform .18s;transform-origin:center}
-  /* content */
-  main.content{max-width:1200px;margin:30px auto 120px;padding:0 20px;z-index:5;position:relative}
-  .section{margin-top:36px}
-  .section h2{font-family:Cinzel,serif;font-size:22px;margin-bottom:12px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
-  /* card */
-  .card{background:#0f0f14;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);transition:transform .24s,box-shadow .24s;position:relative;overflow:hidden}
-  .card:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(106,0,255,0.12)}
-  .card img{width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px}
-  .card .cargo{color:var(--accent);font-weight:800}
-  .card .nome{font-weight:700;margin-top:6px}
-  /* neon outline style (used on panels) */
-  .neon{border:1px solid rgba(133,63,255,0.12);box-shadow:0 6px 30px rgba(133,63,255,0.06)}
-  /* dashboard (hidden until login) */
-  #dashboard{display:none;margin-top:22px;padding:18px;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid rgba(255,255,255,0.04)}
-  .dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-  .stats{display:flex;gap:12px;flex-wrap:wrap}
-  .stat{background:#0b0b0f;padding:12px;border-radius:10px;min-width:140px;text-align:center;border:1px solid rgba(255,255,255,0.02)}
-  .stat strong{display:block;font-size:18px}
-  /* login modal */
-  .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(0deg,rgba(0,0,0,0.6),rgba(0,0,0,0.6));z-index:2000;visibility:hidden;opacity:0;transition:opacity .18s}
-  .modal.open{visibility:visible;opacity:1}
-  .modal-card{width:420px;background:#0b0b10;padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 30px 80px rgba(10,6,40,0.6)}
-  .input{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text);margin-bottom:10px}
-  /* light tilt */
-  .tilt{transform-style:preserve-3d;transition:transform .12s ease}
-  /* small */
-  footer.site-footer{padding:40px 20px;text-align:center;border-top:1px solid rgba(255,255,255,0.02);color:#cfd6ff8f;margin-top:40px}
-  /* responsive */
-  @media (max-width:900px){header.hero{flex-direction:column;padding-top:80px}.hero-art{width:300px;height:200px}.hero-left{order:2}.hero-right{order:1}}
+:root{
+  --bg-1:#05050a; --bg-2:#071029;
+  --accent:#b14dff; --accent-2:#6a00ff;
+  --glass: rgba(255,255,255,0.03);
+  --muted:#aeb6d1;
+  --neon: 0 0 18px rgba(161,86,255,0.18), 0 0 40px rgba(106,0,255,0.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:linear-gradient(180deg,var(--bg-1),var(--bg-2) 60%);color:#eef0ff;min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none;}
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;filter:contrast(1.05) saturate(1.1);}
+nav.topbar{position:fixed;left:0;right:0;top:0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;gap:16px;z-index:1000;background:linear-gradient(180deg,rgba(5,5,8,0.55),rgba(5,5,8,0.25));backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.03);}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand img{width:52px;height:52px;border-radius:12px;box-shadow:0 6px 24px rgba(106,0,255,0.12);}
+.brand h1{font-family:Cinzel,serif;font-size:18px;}
+.menu{display:flex;gap:14px;align-items:center;}
+.menu a{color:var(--accent);font-weight:700;padding:8px 12px;border-radius:10px;transition:.18s;}
+.menu a:hover{color:#fff;transform:translateY(-3px);text-shadow:0 0 12px var(--accent);}
+.cta-discord{background:linear-gradient(90deg,#5865F2,#4752C4);padding:10px 14px;border-radius:999px;color:white;font-weight:800;box-shadow:0 12px 36px rgba(70,90,255,0.12);}
+header.hero{padding:110px 6% 60px;max-width:1400px;margin:0 auto;z-index:5;position:relative;display:flex;gap:32px;align-items:center;}
+.hero-left{flex:1;min-width:300px;}
+.hero-title{font-family:Cinzel,serif;font-size:48px;letter-spacing:1px;margin-bottom:12px;text-shadow:0 6px 30px rgba(106,0,255,0.08);}
+.hero-sub{color:var(--muted);max-width:680px;margin-bottom:18px;}
+.hero-actions{display:flex;gap:12px;align-items:center;}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:12px;font-weight:800;border:0;cursor:pointer;}
+.btn-primary{background:linear-gradient(90deg,var(--accent-2),var(--accent));color:white;box-shadow:var(--neon);}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);}
+.hero-right{flex:1;display:flex;justify-content:center;align-items:center;transform-style:preserve-3d;perspective:900;}
+.hero-art{width:420px;height:260px;border-radius:14px;object-fit:cover;box-shadow:0 30px 80px rgba(80,30,200,0.12);transition:transform .18s;transform-origin:center;}
+main.content{max-width:1200px;margin:30px auto 120px;padding:0 20px;z-index:5;position:relative;}
+.section{margin-top:36px;}
+.section h2{font-family:Cinzel,serif;font-size:22px;margin-bottom:12px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+.card{background:#0f0f14;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);transition:transform .24s,box-shadow .24s;position:relative;overflow:hidden;}
+.card:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(106,0,255,0.12);}
+.card img{width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px;}
+.card .cargo{color:var(--accent);font-weight:800;}
+.card .nome{font-weight:700;margin-top:6px;}
+.neon{border:1px solid rgba(133,63,255,0.12);box-shadow:0 6px 30px rgba(133,63,255,0.06);}
+#dashboard{display:none;margin-top:22px;padding:18px;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid rgba(255,255,255,0.04);}
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(0deg,rgba(0,0,0,0.6),rgba(0,0,0,0.6));z-index:2000;visibility:hidden;opacity:0;transition:opacity .18s;}
+.modal.open{visibility:visible;opacity:1;}
+.modal-card{width:420px;background:#0b0b10;padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 30px 80px rgba(10,6,40,0.6);}
+.input{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:white;margin-bottom:10px;}
+.tilt{transform-style:preserve-3d;transition:transform .12s ease;}
+footer.site-footer{padding:40px 20px;text-align:center;border-top:1px solid rgba(255,255,255,0.02);color:#cfd6ff8f;margin-top:40px;}
+@media (max-width:900px){header.hero{flex-direction:column;padding-top:80px;}.hero-art{width:300px;height:200px;}.hero-left{order:2;}.hero-right{order:1;}}
 </style>
 </head>
 <body>
 
-<!-- PARTICLES CANVAS -->
 <canvas id="bg-canvas"></canvas>
 
-<!-- NAV -->
 <nav class="topbar">
   <div class="brand">
     <img src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048" alt="logo">
     <h1>The World</h1>
   </div>
 
-  <div class="menu" role="navigation" aria-label="Main menu">
+  <div class="menu">
     <a href="#home">Home</a>
     <a href="#equipe">Equipe</a>
     <a href="#parcerias">Parcerias</a>
-    <a href="#contato">Contato</a>
-
-    <!-- Discord quick buttons -->
-    <a class="cta-discord" href="https://discord.gg/47vgpapDHm" target="_blank" title="Entrar no Discord">Entrar</a>
-
-    <!-- login / profile -->
-    <button id="loginBtn" class="btn btn-ghost">Entrar</button>
-    <button id="logoutBtn" class="btn btn-ghost" style="display:none">Sair</button>
+    <a href="#mesas">Mesas</a>
+    <a class="cta-discord" href="https://discord.gg/47vgpapDHm" target="_blank">Entrar</a>
+    <button id="openPanelBtn" class="btn btn-ghost">Abrir Painel</button>
   </div>
 </nav>
 
-<!-- HERO -->
 <header class="hero" id="home">
   <div class="hero-left">
     <div class="hero-title">The World — Comunidade RPG de Mesa</div>
-    <div class="hero-sub">Mesas semanais, mestres experientes, criação colaborativa de mundos, eventos e uma economia de jogo viva. Junte-se às aventuras.</div>
-
+    <div class="hero-sub">Mesas semanais, mestres experientes, criação colaborativa de mundos, eventos e uma economia de jogo viva.</div>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://discord.gg/47vgpapDHm" target="_blank">Entrar no Discord</a>
-      <button class="btn btn-ghost" id="openPanelBtn">Abrir Painel</button>
-      <button class="btn btn-ghost" id="openLoginBtn">Entrar (login)</button>
       <span id="membercount">0</span> membros online
-
     </div>
-
-    <!-- dashboard (shown after login) -->
     <div id="dashboard">
-      <div class="dash-header">
-        <div>
-          <div style="font-size:14px;color:var(--muted)">Bem-vindo, <span id="userNameDisplay">—</span></div>
-          <div style="font-weight:700">Painel Rápido</div>
-        </div>
-        <div class="stats">
-          <div class="stat"><small>Membros</small><strong id="statMembers">—</strong></div>
-          <div class="stat"><small>Mesas Ativas</small><strong id="statTables">12</strong></div>
-          <div class="stat"><small>Eventos Próx.</small><strong id="statEvents">2</strong></div>
-        </div>
-      </div>
-
-      <div class="grid" style="margin-top:12px">
-        <div class="card neon tilt" data-tilt>
-          <img src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048" alt="campaign">
-          <div class="cargo">Campanhas</div>
-          <div class="nome">Lista de campanhas ativas e vagas.</div>
-        </div>
-        <div class="card neon tilt" data-tilt>
-          <img src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048" alt="masters">
-          <div class="cargo">Mestres</div>
-          <div class="nome">Mestres experientes e agendas.</div>
-        </div>
-        <div class="card neon tilt" data-tilt>
-          <img src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048" alt="events">
-          <div class="cargo">Eventos</div>
-          <div class="nome">Calendário mensal e prêmios.</div>
-        </div>
-      </div>
+      <div class="grid" id="mesasContainer"></div>
     </div>
   </div>
-
   <div class="hero-right">
     <img class="hero-art tilt" id="heroArt" src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048" alt="art">
   </div>
 </header>
 
-<!-- MAIN -->
 <main class="content">
 
-  <!-- EQUIPE -->
-  <section id="equipe" class="section">
-    <h2>Equipe & Cargos</h2>
-    <div class="grid">
-      <div class="card tilt" data-tilt>
-        <img src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048" alt="fundador">
-        <div class="cargo">Fundador</div>
-        <div class="nome">@mestrebb</div>
-      </div>
+<section id="equipe" class="section">
+  <h2>Equipe & Cargos</h2>
+  <div class="grid">
+    <div class="card tilt" data-tilt><img src="https://cdn.discordapp.com/avatars/1427715503073394688/a.png" alt="mestre"><div class="cargo">Mestre</div><div class="nome">@Mestre</div></div>
+    <div class="card tilt" data-tilt><img src="https://cdn.discordapp.com/avatars/1446199555845783602/a.png" alt="admin"><div class="cargo">Diretor Staff</div><div class="nome">@Diretor</div></div>
+    <div class="card tilt" data-tilt><img src="https://cdn.discordapp.com/avatars/1446199621230526647/a.png" alt="staff"><div class="cargo">Staff</div><div class="nome">@Staff</div></div>
+  </div>
+</section>
 
-      <div class="card tilt" data-tilt>
-        <img src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048" alt="admin1">
-        <div class="cargo">Admin</div>
-        <div class="nome">@franccis12</div>
-      </div>
+<section id="parcerias" class="section">
+  <h2>Parcerias & Ferramentas</h2>
+  <div class="grid">
+    <div class="card"><img src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048" alt="partner"><div class="cargo">Parceiro</div><div class="nome">ServerDarkWorld</div></div>
+  </div>
+</section>
 
-      <div class="card tilt" data-tilt>
-        <img src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048" alt="admin2">
-        <div class="cargo">Admin</div>
-        <div class="nome">@weliton00d4</div>
-      </div>
-
-      <div class="card tilt" data-tilt>
-        <img src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048" alt="moderator">
-        <div class="cargo">Moderador</div>
-        <div class="nome">Kael</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PARCERIAS -->
-  <section id="parcerias" class="section">
-    <h2>Parcerias & Ferramentas</h2>
-    <div class="grid">
-      <div class="card">
-        <img src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048" alt="partner">
-        <div class="cargo">Parceiro</div>
-        <div class="nome">ServerDarkWorld</div>
-      </div>
-      <div class="card">
-        <img src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048" alt="partner">
-        <div class="cargo">Parceiro</div>
-        <div class="nome">DragonFire</div>
-      </div>
-      <div class="card">
-        <img src="https://cdn.discordapp.com/icons/1412091771500101756/a_62399fbb47e78c35dab7a84748ad92dc.gif?size=2048" alt="partner">
-        <div class="cargo">Parceiro</div>
-        <div class="nome">GalaxyTeamBR</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- RECURSOS -->
-  <section id="recursos" class="section">
-    <h2>Recursos & Downloads</h2>
-    <div class="grid">
-      <div class="card">
-        <img src="https://cdn-icons-png.flaticon.com/512/3050/3050525.png" alt="">
-        <div class="cargo">Manuais</div>
-        <div class="nome">PDFs prontos para impressão.</div>
-        <a class="btn btn-ghost" href="#" onclick="alert('Download simulado')">Baixar</a>
-      </div>
-
-      <div class="card">
-        <img src="https://cdn-icons-png.flaticon.com/512/3209/3209998.png" alt="">
-        <div class="cargo">Fichas</div>
-        <div class="nome">Fichas modelo e templates.</div>
-        <a class="btn btn-ghost" href="#" onclick="alert('Download simulado')">Baixar</a>
-      </div>
-
-      <div class="card">
-        <img src="https://cdn-icons-png.flaticon.com/512/2593/2593526.png" alt="">
-        <div class="cargo">Mapas</div>
-        <div class="nome">Mapas e assets para VTT.</div>
-        <a class="btn btn-ghost" href="#" onclick="alert('Download simulado')">Baixar</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ / Suporte -->
-  <section id="faq" class="section">
-    <h2>FAQ & Suporte</h2>
-    <div style="max-width:900px;margin-top:12px">
-      <details style="padding:14px;border-radius:10px;background:#0b0b10;border:1px solid rgba(255,255,255,0.03);margin-bottom:8px">
-        <summary>Como eu crio uma família?</summary>
-        Crie um ticket no canal #tickets com o nome, tag e emoji da família. Mínimo 10 membros, logo em seguida um administrador ira falar com você.
-      </details>
-
-      <details style="padding:14px;border-radius:10px;background:#0b0b10;border:1px solid rgba(255,255,255,0.03);margin-bottom:8px">
-        <summary>Onde encontro mestres?</summary>
-        Use o topico RPG, e veja as mesas disponiveis. Temos mestres para vários estilos.
-      </details>
-
-      <details style="padding:14px;border-radius:10px;background:#0b0b10;border:1px solid rgba(255,255,255,0.03);margin-bottom:8px">
-        <summary>Preciso pagar para participar?</summary>
-        Não. Todos os recursos e mesas públicas são gratuitos, mais já se você quer ser vip é preciso pagar.
-      </details>
-      <details style="padding:14px;border-radius:10px;background:#0b0b10;border:1px solid rgba(255,255,255,0.03);margin-bottom:8px">
-        <summary>VIP/VIP PREMIUM</summary>
-        Para ser vip primeiro você precisa estar na nossa comunidade. Você precisa criar um ticket informando do seu plano, e um Admin ira o responder. 
-      </details>
-    </div>
-  </section>
+<section id="mesas" class="section">
+  <h2>Mesas & Anúncios</h2>
+  <div class="grid" id="mesasDisplay"></div>
+</section>
 
 </main>
 
 <footer class="site-footer">
-  Criado por weliton, User name: Sr. Black • © <span id="year"></span> • <a href="https://discord.gg/47vgpapDHm" target="_blank" style="color:var(--accent)">Entrar no Discord</a>
+  Criado por weliton • © <span id="year"></span> • <a href="https://discord.gg/47vgpapDHm" target="_blank" style="color:var(--accent)">Entrar no Discord</a>
 </footer>
 
-<!-- LOGIN MODAL -->
-<div id="loginModal" class="modal" aria-hidden="true">
-  <div class="modal-card">
-    <h3 style="margin-bottom:8px">Entrar na comunidade</h3>
-    <input id="loginName" class="input" placeholder="Seu nome (ex: Weliton)">
-    <input id="loginRole" class="input" placeholder="Cargo (ex: Jogador, Mestre)">
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
-      <button class="btn btn-ghost" onclick="closeLogin()">Cancelar</button>
-      <button class="btn btn-primary" onclick="doLogin()">Entrar</button>
-    </div>
-    <div style="margin-top:10px;font-size:12px;color:var(--muted)">Login local — salvo apenas no seu navegador. Para login com Discord, é necessária integração OAuth.</div>
-  </div>
-</div>
-
 <script>
-/* ========== UTILIDADES ========== */
 document.getElementById('year').innerText = new Date().getFullYear();
-function $(sel){return document.querySelector(sel)}
-function $all(sel){return document.querySelectorAll(sel)}
 
-/* ========== PARTICLES 3D (simple) ========== */
+/* PARTICLES */
 const canvas = document.getElementById('bg-canvas');
 const ctx = canvas.getContext('2d');
 let W = canvas.width = innerWidth;
 let H = canvas.height = innerHeight;
-window.addEventListener('resize', ()=>{W=canvas.width=innerWidth;H=canvas.height=innerHeight});
-
-/* create starfield / particles with depth */
+window.addEventListener('resize', ()=>{ W=canvas.width=innerWidth; H=canvas.height=innerHeight; });
 const particles = [];
-for(let i=0;i<160;i++){
-  particles.push({
-    x: Math.random()*W,
-    y: Math.random()*H,
-    z: Math.random()*1, // depth 0..1
-    r: Math.random()*1.8+0.3,
-    hue: 250 + Math.random()*80
-  });
-}
-function drawParticles(time){
-  ctx.clearRect(0,0,W,H);
-  // parallax based on mouse
-  const mx = (mouse.x - W/2)/W;
-  const my = (mouse.y - H/2)/H;
-  for(const p of particles){
-    const speed = 0.15 + p.z*0.6;
-    p.y += speed;
-    p.x += Math.sin(time/500 + p.z*10)*0.15;
-    if(p.y > H+10){ p.y = -10; p.x = Math.random()*W }
-    const size = p.r * (1 + p.z*1.6);
-    const px = p.x + mx * (p.z*80);
-    const py = p.y + my * (p.z*40);
-    const g = ctx.createRadialGradient(px,py,0,px,py,size*8);
-    g.addColorStop(0, `hsla(${p.hue},90%,70%,${0.9 - p.z*0.6})`);
-    g.addColorStop(1, `hsla(${p.hue},90%,50%,0)`);
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.arc(px,py,size,0,Math.PI*2);
-    ctx.fill();
-  }
-  requestAnimationFrame(drawParticles);
-}
+for(let i=0;i<160;i++){particles.push({x:Math.random()*W,y:Math.random()*H,z:Math.random()*1,r:Math.random()*1.8+0.3,hue:250 + Math.random()*80});}
+const mouse={x:W/2,y:H/2};
+window.addEventListener('mousemove', e=>{ mouse.x=e.clientX; mouse.y=e.clientY; });
+function drawParticles(time){ctx.clearRect(0,0,W,H);const mx=(mouse.x-W/2)/W;const my=(mouse.y-H/2)/H;for(const p of particles){const speed=0.15+p.z*0.6;p.y+=speed;p.x+=Math.sin(time/500 + p.z*10)*0.15;if(p.y>H+10){p.y=-10;p.x=Math.random()*W;}const size=p.r*(1+p.z*1.6);const px=p.x + mx*(p.z*80);const py=p.y + my*(p.z*40);const g=ctx.createRadialGradient(px,py,0,px,py,size*8);g.addColorStop(0,`hsla(${p.hue},90%,70%,${0.9-p.z*0.6})`);g.addColorStop(1,`hsla(${p.hue},90%,50%,0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(px,py,size,0,Math.PI*2);ctx.fill();}requestAnimationFrame(drawParticles);}
 requestAnimationFrame(drawParticles);
 
-/* track mouse for parallax & tilt */
-const mouse = {x: W/2, y: H/2};
-window.addEventListener('mousemove', (e)=>{mouse.x=e.clientX;mouse.y=e.clientY});
+/* TILT */
+function bindTilt(){const tiltEls=document.querySelectorAll('[data-tilt]');tiltEls.forEach(el=>{el.addEventListener('mousemove',ev=>{const rect=el.getBoundingClientRect();const cx=rect.left+rect.width/2;const cy=rect.top+rect.height/2;const dx=(ev.clientX-cx)/rect.width;const dy=(ev.clientY-cy)/rect.height;el.style.transform=`translateZ(0) rotateX(${-dy*8}deg) rotateY(${dx*8}deg)`;});el.addEventListener('mouseleave',()=>{el.style.transform='';});});}
+setTimeout(bindTilt,400);
 
-/* ====== TILT EFFECT ====== */
-function bindTilt(){
-  const tiltEls = document.querySelectorAll('[data-tilt]');
-  tiltEls.forEach(el=>{
-    el.addEventListener('mousemove', (ev)=>{
-      const rect = el.getBoundingClientRect();
-      const cx = rect.left + rect.width/2;
-      const cy = rect.top + rect.height/2;
-      const dx = (ev.clientX - cx) / rect.width;
-      const dy = (ev.clientY - cy) / rect.height;
-      const rx = dy * -8; // rotateX
-      const ry = dx * 8; // rotateY
-      el.style.transform = `translateZ(0) rotateX(${rx}deg) rotateY(${ry}deg)`;
-    });
-    el.addEventListener('mouseleave', ()=>{ el.style.transform = ''; });
+/* HERO Parallax */
+const heroArt=document.getElementById('heroArt');
+document.querySelector('.hero').addEventListener('mousemove',e=>{const rect=document.querySelector('.hero').getBoundingClientRect();const dx=(e.clientX-(rect.left+rect.width/2))/rect.width;const dy=(e.clientY-(rect.top+rect.height/2))/rect.height;heroArt.style.transform=`translateZ(0) rotateY(${dx*6}deg) rotateX(${-dy*6}deg)`;});
+document.querySelector('.hero').addEventListener('mouseleave',()=>heroArt.style.transform='none');
+
+/* DASHBOARD */
+const mesasContainer=document.getElementById('mesasContainer');
+const mesasDisplay=document.getElementById('mesasDisplay');
+const mockMesas=[
+  {titulo:"Aventura em Azura",mestre:"Mestre @1427715503073394688",descricao:"Segunda e quinta 20h",img:"https://cdn-icons-png.flaticon.com/512/2919/2919600.png"},
+  {titulo:"Mistérios de Eldoria",mestre:"Mestre @1427715503073394688",descricao:"Sábados 18h",img:"https://cdn-icons-png.flaticon.com/512/2919/2919600.png"}
+];
+function atualizarMesas(){mesasContainer.innerHTML='';mesasDisplay.innerHTML='';mockMesas.forEach(m=>{const card=`<div class="card neon tilt"><img src="${m.img}" alt=""><div class="cargo">${m.titulo}</div><div class="nome">${m.mestre} - ${m.descricao}</div></div>`;mesasContainer.innerHTML+=card;mesasDisplay.innerHTML+=card;});}
+atualizarMesas();
+
+fetch('http://localhost:3000/mesas')
+  .then(res => res.json())
+  .then(data => {
+    // Atualiza a seção mesas no site
+    console.log(data);
   });
-}
-setTimeout(bindTilt, 400);
 
-/* ====== LOGIN COM DISCORD ====== */
-const loginModal = document.getElementById('loginModal');
-
-// abre modal (opcional se você quiser manter)
-function openLogin(){ 
-  loginModal.classList.add('open'); 
-  loginModal.style.visibility='visible'; 
-  loginModal.setAttribute('aria-hidden','false');
-}
-
-function closeLogin(){ 
-  loginModal.classList.remove('open'); 
-  loginModal.style.visibility='hidden'; 
-  loginModal.setAttribute('aria-hidden','true');
-}
-
-// não mais login local, agora só redireciona para OAuth2
-function doLoginDiscord(){
-  window.location.href = "/auth/discord"; // endpoint do backend para OAuth2
-}
-
-// logout destrói sessão via backend
-function logout(){
-  window.location.href = "/logout";
-}
-
-/* apply login state to UI */
-async function applyLogin(){
-  try {
-    const res = await fetch('/api/me');
-    const data = await res.json();
-    if(data.logged){
-      $('#loginBtn').style.display='none';
-      $('#logoutBtn').style.display='inline-flex';
-      $('#userNameDisplay').innerText = data.user.username;
-      $('#dashboard').style.display='block';
-      // demo: atualizar estatísticas
-      $('#statMembers').innerText = (Math.floor(1200 + Math.random()*400)).toLocaleString('pt-BR');
-    } else {
-      $('#loginBtn').style.display='inline-flex';
-      $('#logoutBtn').style.display='none';
-      $('#userNameDisplay').innerText = '—';
-      $('#dashboard').style.display='none';
-    }
-  } catch(e){
-    console.error('Erro ao verificar login', e);
-  }
-}
-
-/* bind login buttons */
-$('#openLoginBtn').addEventListener('click', doLoginDiscord);
-$('#loginBtn').addEventListener('click', doLoginDiscord);
-$('#logoutBtn').addEventListener('click', logout);
-
-/* painel toggle */
-$('#openPanelBtn').addEventListener('click', async ()=>{
-  const res = await fetch('/api/me');
-  const data = await res.json();
-  if(!data.logged){ doLoginDiscord(); return; }
-  const d = $('#dashboard');
-  d.style.display = d.style.display === 'block' ? 'none' : 'block';
-});
-
-// checa login ao carregar
-applyLogin();
-
-
-/* ====== HERO parallax subtle tilt ====== */
-const heroArt = document.getElementById('heroArt');
-document.querySelector('.hero').addEventListener('mousemove', (e)=>{
-  const rect = document.querySelector('.hero').getBoundingClientRect();
-  const dx = (e.clientX - (rect.left + rect.width/2))/rect.width;
-  const dy = (e.clientY - (rect.top + rect.height/2))/rect.height;
-  heroArt.style.transform = `translateZ(0) rotateY(${dx*6}deg) rotateX(${ -dy*6 }deg)`;
-});
-document.querySelector('.hero').addEventListener('mouseleave', ()=> heroArt.style.transform = 'none');
-
-/* ====== small helper: smooth scrolling for nav links ====== */
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click', (e)=>{
-    const href = a.getAttribute('href');
-    if(href === '#') return;
-    const el = document.querySelector(href);
-    if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'}) }
-  });
-});
-
-/* ====== Demo: animate some dashboard stats on login ====== */
-function animateStat(id, from, to, ms=900){
-  const el = document.getElementById(id);
-  if(!el) return;
-  const start = performance.now();
-  function frame(t){
-    const p = Math.min(1,(t-start)/ms);
-    const val = Math.floor(from + (to-from)*p);
-    el.innerText = val.toLocaleString('pt-BR');
-    if(p<1) requestAnimationFrame(frame);
-  }
-  requestAnimationFrame(frame);
-}
-
-/* when dashboard shown, animate numbers */
-const observer = new MutationObserver(()=> {
-  if($('#dashboard').style.display === 'block'){
-    animateStat('statTables', 8, 14, 900);
-    animateStat('statEvents', 1, 3, 900);
-  }
-});
-observer.observe($('#dashboard'), {attributes:true, attributeFilter:['style']});
-
-/* small fallback for old browsers */
-window.addEventListener('error', function(e){ console.warn('Script error', e); });
-
-</script>
-<script>
-const TOKEN = "suaSenhaDoPainel123";
-async function updateMembers() {
-    const res = await fetch("http://localhost:3002/api/botinfo", {
-        headers: { "Authorization": TOKEN }
-    });
-    const data = await res.json();
-    document.getElementById("membercount").innerText = data.members;
-}
-updateMembers();
-setInterval(updateMembers, 60000);
+/* Simula atualização via Bot Discord (você conecta via API/WebSocket) */
+function adicionarMesa(titulo,mestre,descricao,img){mockMesas.push({titulo,mestre,descricao,img});atualizarMesas();}
 </script>
 </body>
 </html>
